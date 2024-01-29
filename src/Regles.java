@@ -4,13 +4,34 @@ import java.nio.file.*;
 import java.io.*;
 
 public class Regles {
-    private int dim=0;
-    private boolean valide=false;
-    private int [][] voisins=null;
-    private Condition [] conditions=null;
-    private Action [] actions=null;
-    private Variable [] variables=null;
-    private String erreur="";
+    private int dim;
+    private boolean valide;
+    private int [][] voisins;
+    private Condition [] conditions;
+    private Action [] actions;
+    private Variable [] variables;
+    private String erreur;
+
+    public Regles () {
+        dim=0;
+        valide=false;
+        voisins=null;
+        conditions=null;
+        actions=null;
+        variables=null;
+        erreur="";
+    }
+
+    public Regles (String fichier) {
+        dim=0;
+        valide=false;
+        voisins=null;
+        conditions=null;
+        actions=null;
+        variables=null;
+        erreur="";
+        charger(fichier);
+    }
     
     private boolean setCondition (String exp, int num) {
         if (num<0 || conditions.length-1<num) {

@@ -1,0 +1,13 @@
+/* Règle de majorité avec 8 voisins */
+1,0; /* 0° */
+1,-1; /* 45° */
+0,-1; /* 90° */
+-1,-1; /* 135° */
+-1,0; /* 180° */
+-1,1; /* 225° */
+0,1; /* 270° */
+1,1; /* 315° */
+@
+
+1==1?
+    1:majority;     /* Retourne la valeur majoritaire dans le voisinage */

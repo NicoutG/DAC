@@ -1,0 +1,18 @@
+/* Jeu de la vie avec 8 voisins */
+1,0; /* 0° */
+1,-1; /* 45° */
+0,-1; /* 90° */
+-1,-1; /* 135° */
+-1,0; /* 180° */
+-1,1; /* 225° */
+0,1; /* 270° */
+1,1; /* 315° */
+@
+
+/* 0 mort */
+/* 1 vivant */
+
+count(1.0)==3.0?     /* naissance car 3 voisins en vie */
+    1.0:1.0; 
+(count(1.0)<2.0)||(count(1.0)>3.0)?      /* mort car moins de 2 ou plus de 3 voisins en vie */
+    1.0:0.0; 

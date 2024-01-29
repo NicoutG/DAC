@@ -1,0 +1,9 @@
+/* Règle de majorité avec 4 voisins */
+0,-1; /* haut 90° */
+0,1; /* bas 270° */
+-1,0; /* gauche 180° */
+1,0; /* droite 0° */
+@
+
+1==1?
+    1:majority;     /* Retourne la valeur majoritaire dans le voisinage */

@@ -1,0 +1,11 @@
+/* Règle de majorité avec 6 voisins */
+1,0; /* 0° */
+1,-1; /* 60° */
+0,-1; /* 120° */
+-1,0; /* 180° */
+0,1; /* 240° */
+1,1; /* 300° */
+@
+
+1==1?
+    1:majority;     /* Retourne la valeur majoritaire dans le voisinage */

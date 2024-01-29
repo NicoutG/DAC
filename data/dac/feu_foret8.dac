@@ -1,0 +1,21 @@
+/* Feu de forêt à 8 voisins */
+1,0; /* 0° */
+1,-1; /* 45° */
+0,-1; /* 90° */
+-1,-1; /* 135° */
+-1,0; /* 180° */
+-1,1; /* 225° */
+0,1; /* 270° */
+1,1; /* 315° */
+@
+
+/* 0 pas de forêt */
+/* 1 forêt */
+/* 2 forêt en feu */
+/* 3 forêt brulée */
+
+#(0)==2.0?     /* La forêt en feu devient brulée */
+    1.0:3.0; 
+#(0)==1.0?     /* La forêt prend feu ou pas en fonction du nombre de forêts voisines en feu */
+    ($q+(verif(#(1)==2.0)*($p+$fd))+(verif(#(2)==2.0)*($p+cos(45)*$fd+sin(45)*$fh))+(verif(#(3)==2.0)*($p+$fh))+(verif(#(4)==2.0)*($p+cos(135)*$fd+sin(135)*$fh))+(verif(#(5)==2.0)*($p-$fd))+(verif(#(6)==2.0)*($p+cos(225)*$fd+sin(225)*$fh))+(verif(#(7)==2.0)*($p-$fh))+(verif(#(8)==2.0)*($p+cos(315)*$fd+sin(315)*$fh))):2.0,
+    1-($q+(verif(#(1)==2.0)*($p+$fd))+(verif(#(2)==2.0)*($p+cos(45)*$fd+sin(45)*$fh))+(verif(#(3)==2.0)*($p+$fh))+(verif(#(4)==2.0)*($p+cos(135)*$fd+sin(135)*$fh))+(verif(#(5)==2.0)*($p-$fd))+(verif(#(6)==2.0)*($p+cos(225)*$fd+sin(225)*$fh))+(verif(#(7)==2.0)*($p-$fh))+(verif(#(8)==2.0)*($p+cos(315)*$fd+sin(315)*$fh))):1.0; 
