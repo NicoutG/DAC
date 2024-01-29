@@ -4,8 +4,13 @@ public class Main {
 
     // Un automate que l'on charge depuis des fichiers
     public static void automateChargement () {
-        Tableau tab=new Tableau ("data/tableaux/tab1.txt"); // Initialisation d'un tableau à partir d'un fichier txt
-        Regles reg=new Regles("data/dac/jeu_vie.dac"); // Initialisation d'une règle à partir d'un fichier dac
+        Tableau tab=new Tableau ("data/tableaux/tab3.txt"); // Initialisation d'un tableau à partir d'un fichier txt
+        Regles reg=new Regles("data/dac/feu_foret8.dac"); // Initialisation d'une règle à partir d'un fichier dac
+
+        reg.setVar("q",0.01); // Modification des variables de la règle
+        reg.setVar("p",0.2);
+        reg.setVar("fh",0.1);
+
         for (int i=0;i<10;i++) {
             System.out.println("Etape "+i+" :");
             tab.afficher(true); // Affichage du tableau sous forme d'entiers
@@ -23,7 +28,7 @@ public class Main {
         tab.setVal(3,8,-4.3);
         tab.setVal(5,5,-16);
 
-        Regles reg=new Regles("dac/jeu_vie.dac"); // Initialisation d'une règle
+        Regles reg=new Regles(); // Initialisation d'une règle
         reg.set("1,0; 1,-1; 0,-1; -1,-1; -1,0; -1,1; 0,1; 1,1; @ 1.0==1.0? 1.0:(maximum-minimum);"); // Définition de la règle à partir d'un code DAC
 
         for (int i=0;i<10;i++) {

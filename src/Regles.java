@@ -12,6 +12,9 @@ public class Regles {
     private Variable [] variables;
     private String erreur;
 
+    /**
+     * Constructeur par défaut de Regles
+     */
     public Regles () {
         dim=0;
         valide=false;
@@ -22,6 +25,9 @@ public class Regles {
         erreur="";
     }
 
+    /**
+     * Constructeur de Regles qui permet de charger une règle
+     */
     public Regles (String fichier) {
         dim=0;
         valide=false;
@@ -33,6 +39,12 @@ public class Regles {
         charger(fichier);
     }
     
+    /**
+     * Créé l'arbre d'execution d'une condition
+     * @param exp l'expression de la condition à interpréter
+     * @param num le numéro de la condition
+     * @return boolean si la condition a bien été interprétée
+     */
     private boolean setCondition (String exp, int num) {
         if (num<0 || conditions.length-1<num) {
             return false;
@@ -48,6 +60,12 @@ public class Regles {
         return true;
     }
     
+    /**
+     * Créé l'arbre d'execution d'une action
+     * @param exp l'expression de l'action à interpréter
+     * @param num le numéro de l'action
+     * @return boolean si l'action a bien été interprété
+     */
     private boolean setAction (String exp, int num) {
         if (num<0 || conditions.length-1<num) {
             return false;
@@ -60,6 +78,11 @@ public class Regles {
         return ret;
     }
     
+    /**
+     * Créé les arbres d'executions des conditions et des actions
+     * @param exp l'expression des conditions et actions à interpréter
+     * @return boolean si les conditions et les actions ont bien été interprétés
+     */
     private boolean setCondActions (String exp) {
         setVariables(exp);
         String [] exps=exp.split(";");
@@ -91,6 +114,11 @@ public class Regles {
         return true;
     }
     
+    /**
+     * Stock les indices des voisins dans un tableau
+     * @param exp l'expression des conditions et actions à interpréter
+     * @return boolean si les coordonnées des voisins ont bien été interprétées
+     */
     private boolean setVoisins (String exp) {
         String [] vois=exp.split(";");
         if (vois==null || vois.length<1) {
@@ -123,6 +151,11 @@ public class Regles {
         return true;
     }
 
+    /**
+     * Ajoute une variable à la liste des variables
+     * @param nom le nom de la variable à ajouter
+     * @return boolean si la variable n'êtait pas déjà dans la liste
+     */
     private boolean addVariable (String nom) {
         if (!isVariable(nom)) {
             if (variables==null) {
@@ -150,6 +183,10 @@ public class Regles {
         return false;
     }
 
+    /**
+     * Recupère l'ensemble des variables présentes dans le code DAC 
+     * @param exp l'expression à interpréter
+     */
     private void setVariables (String exp) {
         Valeur fonction=new Variable ();
         String sub;
@@ -163,6 +200,11 @@ public class Regles {
         }
     }
 
+    /**
+     * Retire les commentaires de l'expression
+     * @param exp l'expression à interpréter
+     * @return String l'expression sans commentaires
+     */
     private String retireCom (String exp) {
         if (!exp.contains("/*") || !exp.contains("*/")) {
             return exp;
@@ -193,6 +235,12 @@ public class Regles {
         return res;
     }
     
+    /**
+     * Renvoi la nouvelle valeur de la cellule après application de la règle
+     * @param tab le tableau sur lequel on applique la règle
+     * @param indices les indices de la cellule du tableau sur laquelle on applique la règle
+     * @return double la nouvelle valeur de la cellule après application de la règle
+     */
     private double get (Tableau tab, int [] indices) {
         int [] vois=new int [dim];
         double [] valVois=new double [voisins.length];
@@ -210,6 +258,11 @@ public class Regles {
         return tab.getVal(indices);
     }
 
+    /**
+     * Interprète un code DAC pour créer les arbres d'executions
+     * @param exp l'expression DAC à interpréter
+     * @return boolean si l'expression a bien été interprétée
+     */
     public boolean set (String exp) {
         erreur="";
         exp=retireCom(exp);
@@ -233,6 +286,11 @@ public class Regles {
         return valide;
     }
     
+    /**
+     * Applique la règle sur un tableau pour générer un nouveau tableau
+     * @param tab le tableau sur lequel on applique la règle
+     * @return Tableau le tableau généré après application de la règle
+     */
     public Tableau appliquer (Tableau tab) {
         if (tab.getDim()!=dim || !valide) {
             return tab;
@@ -257,6 +315,10 @@ public class Regles {
         return res;
     }
     
+    /**
+     * Renvoi l'expression DAC qui a été interprétée par la classe
+     * @return String l'expression interprétée par la classe
+     */
     public String getExp () {
         if (valide) {
             String exp="";
@@ -276,6 +338,11 @@ public class Regles {
         return "Error";
     }
     
+    /**
+     * Charge une expression DAC depuis un fichier .dac
+     * @param fichier le nom du fichier à charger
+     * @return boolean si le fichier a bien été interprété
+     */
     public boolean charger (String fichier) {
         try {
             String exp=new String(Files.readAllBytes(Paths.get(fichier)));
@@ -287,6 +354,11 @@ public class Regles {
         }
     }
     
+    /**
+     * Sauvegarde l'expression DAC qui a été interprétée par la classe
+     * @param fichier le nom du fichier dans lequel sauvegarder l'expression
+     * @return boolean si l'expression a bien été sauvegardée
+     */
     public boolean sauvegarder (String fichier) {
         if (valide) {
             try {
@@ -301,6 +373,11 @@ public class Regles {
         return false;
     }
 
+    /**
+     * Verifie si un nom correspond à celui d'une variable de l'expression
+     * @param nom le nom de la variable que l'on cherche
+     * @return boolean si le nom correspond à celui d'une variable de l'expression
+     */
     public boolean isVariable (String nom) {
         if (variables!=null) {
             for (int i=0;i<variables.length;i++) {
@@ -312,6 +389,12 @@ public class Regles {
         return false;
     }
 
+    /**
+     * Assigne une valeur dans une variable de l'expression
+     * @param nom le nom de la variable que l'on souhaite modifier
+     * @param val la valeur que l'on assigne à la variable
+     * @return boolean si le nom correspond à celui d'une variable de l'expression
+     */
     public boolean setVar (String nom, double val) {
         if (variables!=null) {
             for (int i=0;i<variables.length;i++) {
@@ -324,6 +407,11 @@ public class Regles {
         return false;
     }
 
+    /**
+     * Renvoi la valeur d'une variable de l'expression
+     * @param nom le nom de la variable dont on veut connaitre la valeur
+     * @return double la valeur de la variable
+     */
     public double getVar (String nom) {
         if (variables!=null) {
             for (int i=0;i<variables.length;i++) {
@@ -335,6 +423,10 @@ public class Regles {
         return 0;
     }
 
+    /**
+     * Renvoi l'ensemble des noms des varaibles de l'expression
+     * @return String [] les noms de variables
+     */
     public String [] getVarList () {
         if (variables!=null) {
             String [] list=new String [variables.length];
@@ -346,6 +438,10 @@ public class Regles {
         return null;
     }
 
+    /**
+     * Renvoi le nombre de variables presentes dans l'expression
+     * @return int le nombre de variables
+     */
     public int getNbVars () {
         if (variables==null) {
             return 0;
@@ -353,6 +449,11 @@ public class Regles {
         return variables.length;
     }
 
+    /**
+     * Retire l'indentation de l'expression
+     * @param exp l'expression du DAC
+     * @return String l'expression du DAC sans indentation
+     */
     private String simplification (String exp) {
         String [] exps=exp.split("\r?\n|\r");
         String res="";
@@ -367,10 +468,18 @@ public class Regles {
         return res;
     }
 
+    /**
+     * Renvoi un message expliquant la potentielle erreur d'interprétation
+     * @return String l'erreur rencontrée
+     */
     public String getErreur () {
         return erreur;
     }
 
+    /**
+     * Renvoi la dimension des tableaux sur lesquelles la règles peut s'appliquer
+     * @return int la dimension de la règle
+     */
     public int getDim () {
         return dim;
     }
