@@ -107,7 +107,7 @@ public class OpLogUni extends Condition{
                     for (int k=0;k<opList.length;k++) {
                         debut=i-opList[k].length()+1;
                         if (0<=debut && exp.substring(debut,i+1).equals(opList[k])) {
-                            if (opList[k].equals("!") && exp.charAt(debut+1)!='=') {
+                            if (!opList[k].equals("!") || exp.charAt(debut+1)!='=') {
                                 return i;
                             }
                         }

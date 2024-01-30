@@ -3,7 +3,7 @@ package src;
 import java.util.Random;
 
 /**
- * La classe OpAriUni étend la classe Valeur et représente une opération arithmétique uniaire
+ * La classe OpAriUni étend la classe Valeur et représente une opération arithmétique unaire
  * (comme le cosinus, le sinus, l'exponentielle, etc.) dans le contexte d'un automate cellulaire.
  */
 public class OpAriUni extends Valeur{
