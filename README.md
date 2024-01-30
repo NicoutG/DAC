@@ -9,6 +9,7 @@ Ce projet permet d'interpréter ce langage.
 
 - ANTOINE Maxime : Site web du DAC
 - GALLET Nicolas : Langage DAC et interpréteur
+- GINHAC Jules : Documentation du code
 
 ## Mentions
 

@@ -1,10 +1,32 @@
 package src;
 
+/**
+ * La classe Action représente une action dans un automate cellulaire.
+ * Elle contient des probabilités et des valeurs correspondantes pour effectuer des actions.
+ */
 public class Action {
+
+    /**
+     * proba est un tableau de valeurs représentant les probabilités d'effectuer une action.
+     */
     private Valeur [] proba=null;
+
+    /**
+     * valeurs est un tableau de valeurs représentant les valeurs des actions.
+     */
     private Valeur [] valeurs=null;
 
-    
+    /**
+     * Configure l'action à partir d'une expression, du nombre de voisins,
+     * d'un tableau de variables, d'un tableau pour les messages d'erreur et de la dimension.
+     * 
+     * @param exp L'expression définissant les actions et leurs probabilités.
+     * @param nbVoisins Le nombre de voisins considérés pour l'action.
+     * @param var Tableau de variables utilisées dans l'expression.
+     * @param erreur Tableau pour stocker les messages d'erreur.
+     * @param dim La dimension de l'espace de l'action.
+     * @return Vrai si l'action est correctement configurée, faux sinon.
+     */
     public boolean set (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
         String [] exps=exp.split(",");
         if (exps==null || exps.length==0) {
@@ -39,6 +61,14 @@ public class Action {
         return true;
     }
     
+    /**
+     * Calcule la valeur de l'action basée sur un tableau, les valeurs des voisins et leurs indices.
+     * 
+     * @param tab Le tableau utilisé pour calculer la valeur de l'action.
+     * @param voisins Les valeurs des voisins.
+     * @param indices Les indices des voisins.
+     * @return La valeur calculée de l'action ou -1 si aucune action ne peut être effectuée.
+     */
     public double get (Tableau tab, double [] voisins, int [] indices) {
         int nb=proba.length;
         if (nb<1) 
@@ -58,6 +88,11 @@ public class Action {
         return -1;
     }
     
+    /**
+     * Retourne l'expression représentant les probabilités et les valeurs de l'action.
+     * 
+     * @return Une chaîne de caractères représentant l'expression de l'action.
+     */
     public String getExp () {
         String exp=proba[0].getExp()+":"+valeurs[0].getExp();
         for (int i=1;i<proba.length;i++) {

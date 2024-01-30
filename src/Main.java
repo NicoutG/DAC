@@ -19,7 +19,7 @@ public class Main {
         }
     }
 
-    // Un automate que l'on défini en entier
+    // Un automate que l'on définit en entier
     public static void automateDefinition () {
         Tableau tab=new Tableau (2,10); // Initialisation d'un tableau de dimension 2 et de taille 10
         tab.setVal(0,0,1.8); // Modification des valeurs du tableau

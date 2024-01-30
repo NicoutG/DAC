@@ -6,15 +6,32 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Classe représentant un tableau pour un automate cellulaire.
+ * Le tableau peut être multidimensionnel et contient des données numériques.
+ */
 public class Tableau {
+
+    /**
+     * La dimension du tableau.
+     */
     private int dim;
+
+    /**
+     * La taille du tableau.
+     */
     private int taille;
+
+    /**
+     * Le tableau de données.
+     */
     private Object [] tab;
     
     /**
-     * Constructeur de Tableau
-     * @param d la dimension du tableau
-     * @param t la taille du tableau
+     * Constructeur pour créer un tableau de dimension et de taille spécifiées.
+     * 
+     * @param d La dimension du tableau.
+     * @param t La taille de chaque dimension du tableau.
      */
     public Tableau (int d, int t) {
         if (d>0 && t>0) {
@@ -38,8 +55,9 @@ public class Tableau {
     }
 
     /**
-     * Constructeur de Tableau qui permet de charger un tableau
-     * @param fichier le nom du fichier .txt à charger
+     * Constructeur pour charger un tableau à partir d'un fichier.
+     * 
+     * @param fichier Le chemin du fichier à charger.
      */
     public Tableau (String fichier) {
         if (!charger(fichier)) {
@@ -48,9 +66,10 @@ public class Tableau {
     }
 
     /**
-     * Retire l'indentation du fichier
-     * @param exp l'expression du fichier
-     * @return String le fichier sans indentation
+     * Simplifie une chaîne de caractères en supprimant les espaces et retours à la ligne.
+     * 
+     * @param exp La chaîne de caractères à simplifier.
+     * @return Un tableau de chaînes de caractères simplifiées.
      */
     private String [] simplification (String exp) {
         String [] exps=exp.split("\r?\n|\r");
@@ -80,9 +99,10 @@ public class Tableau {
     }
 
     /**
-     * Charge un tableau depuis un fichier .txt
-     * @param fichier le nom du fichier .txt à charger
-     * @return boolean si le tableau a bien été chargé
+     * Charge les données du tableau à partir d'un fichier.
+     * 
+     * @param fichier Le chemin du fichier à charger.
+     * @return Vrai si le chargement réussit, faux sinon.
      */
     public boolean charger (String fichier) {
         try {
@@ -132,9 +152,10 @@ public class Tableau {
     }
 
     /**
-     * Sauvegarde un tableau dans un fichier .txt
-     * @param fichier le nom du fichier .txt dans lequel on sauvegarde le tableau
-     * @return boolean si le tableau a bien été sauvegardé
+     * Sauvegarde les données du tableau dans un fichier.
+     * 
+     * @param fichier Le chemin du fichier où sauvegarder.
+     * @return Vrai si la sauvegarde réussit, faux sinon.
      */
     public boolean sauvegarder (String fichier) {
         try {
@@ -163,10 +184,11 @@ public class Tableau {
         }
     }
 
-    /**
-     * Ajoute une valeur dans des cases aléatoires du tableau
-     * @param nb le nombre de valeurs à ajouter dans le tableau
-     * @param val la valeur à ajouter dans le tableau
+     /**
+     * Remplit le tableau avec une valeur spécifiée, jusqu'à un nombre donné de cellules.
+     * 
+     * @param nb Le nombre de cellules à remplir.
+     * @param val La valeur à utiliser pour remplir.
      */
     public void remplir (int nb, float val) {
         int [] indices= new int [dim];
@@ -208,9 +230,10 @@ public class Tableau {
     }
 
     /**
-     * Met des valeurs entières aléatoires comprise dans un intervalle dans toutes les cases du tableau
-     * @param min la borne inférieur de l'intervalle
-     * @param max la borne supérieur de l'intervalle
+     * Initialise le tableau avec des valeurs aléatoires dans une plage donnée.
+     * 
+     * @param min La valeur minimale (incluse) pour l'aléatoire.
+     * @param max La valeur maximale (incluse) pour l'aléatoire.
      */
     public void intialiserAleatoirement (int min, int max) {
         int [] indices= new int [dim];
@@ -232,25 +255,28 @@ public class Tableau {
     }
     
     /**
-     * Renvoi la dimension du tableau
-     * @return int la dimension du tableau
+     * Renvoie la dimension du tableau.
+     * 
+     * @return La dimension du tableau.
      */
     public int getDim () {
         return dim;
     }
     
     /**
-     * Renvoi la taille du tableau
-     * @return int la taille du tableau
+     * Renvoie la taille du tableau.
+     * 
+     * @return La taille du tableau.
      */
     public int getTaille () {
         return taille;
     }
     
     /**
-     * Renvoi la valeur d'une case du tableau
-     * @param args les indices de la case
-     * @return double la valeur de la case
+     * Récupère la valeur d'une cellule spécifiée par ses indices.
+     * 
+     * @param args Les indices de la cellule dans chaque dimension.
+     * @return La valeur de la cellule.
      */
     public double getVal (int... args) {
         if (args.length==dim) {
@@ -273,10 +299,11 @@ public class Tableau {
     }
     
     /**
-     * Modifie la valeur d'une case du tableau
-     * @param args les indices de la case
-     * @param val la valeur à assigner
-     * @return boolean si les indices sont valides
+     * Modifie la valeur d'une cellule spécifiée par ses indices.
+     * 
+     * @param args Les indices de la cellule dans chaque dimension.
+     * @param val La nouvelle valeur de la cellule.
+     * @return Vrai si la modification réussit, faux sinon.
      */
     public boolean setVal (int [] args, double val) {
         if (args.length==dim) {
@@ -302,9 +329,10 @@ public class Tableau {
     }
     
     /**
-     * Modifie la valeur d'une case du tableau
-     * @param args les indices de la case et la valeur de modification à la fin
-     * @return boolean si les indices sont valides
+     * Définit la valeur d'une cellule spécifiée par ses indices.
+     * 
+     * @param args Les indices de la cellule suivis de la valeur à assigner.
+     * @return Vrai si la valeur a été assignée avec succès, faux sinon.
      */
     public boolean setVal (double... args) {
         if (args!=null && args.length==dim+1) {
@@ -320,8 +348,9 @@ public class Tableau {
     }
 
     /**
-     * Affiche le tableau
-     * @param entier si l'affichage convertit les valeurs en entiers à l'affichage
+     * Affiche le contenu du tableau.
+     * 
+     * @param entier Si vrai, affiche les valeurs en tant qu'entiers, sinon en tant que doubles.
      */
     public void afficher (boolean entier) {
         int [] indices= new int [dim];

@@ -2,11 +2,39 @@ package src;
 
 import java.util.Random;
 
+/**
+ * La classe OpAriUni étend la classe Valeur et représente une opération arithmétique uniaire
+ * (comme le cosinus, le sinus, l'exponentielle, etc.) dans le contexte d'un automate cellulaire.
+ */
 public class OpAriUni extends Valeur{
+
+    /**
+     * obj est la valeur sur laquelle l'opération unaire est effectuée.
+     */
     private Object obj;
+
+    /**
+     * op est l'opérateur utilisé pour l'opération unaire.
+     */
     private String op="";
+
+    /**
+     * opList est la liste des opérations unaires possibles.
+     */
     private String [] opList={"verif","count","#","cos","sin","tan","exp","ln","rand","coord","int"};
     
+    /**
+     * Configure l'opération arithmétique uniaire à partir d'une expression, position, nombre de voisins,
+     * tableau de variables, tableau d'erreurs et dimension.
+     * 
+     * @param exp L'expression représentant l'opération uniaire.
+     * @param position La position de l'opérateur dans l'expression.
+     * @param nbVoisins Le nombre de voisins (non utilisé dans certains contextes).
+     * @param var Tableau de variables utilisées dans l'expression.
+     * @param erreur Tableau pour stocker les messages d'erreur.
+     * @param dim La dimension de l'automate.
+     * @return Vrai si l'opération est correctement configurée, faux sinon.
+     */
     public boolean set (String exp, int position, int nbVoisins, Variable [] var, String [] erreur,int dim) {
         if (exp.length()<=position) {
             erreur[0]="Impossible de convertir "+exp+" en operation arithmetique unaire";
@@ -77,6 +105,14 @@ public class OpAriUni extends Valeur{
         return false;
     }
     
+    /**
+     * Renvoie le résultat de l'opération arithmétique uniaire.
+     * 
+     * @param tab Le tableau représentant l'état de l'automate.
+     * @param voisins Les valeurs des voisins.
+     * @param indices Les indices des voisins ou de la cellule elle-même.
+     * @return Le résultat de l'opération uniaire.
+     */
     public double get (Tableau tab, double [] voisins, int [] indices) {
         switch (op) {
             case "verif": {
@@ -118,6 +154,11 @@ public class OpAriUni extends Valeur{
         return 0;
     }
     
+    /**
+     * Retourne l'expression de l'opération uniaire sous forme de chaîne de caractères.
+     * 
+     * @return Une chaîne représentant l'opération uniaire.
+     */
     public String getExp () {
         if (obj instanceof Condition) {
             return op+"("+((Condition)obj).getExp()+")";
@@ -128,6 +169,12 @@ public class OpAriUni extends Valeur{
         return op+"("+obj+")";
     }
 
+    /**
+     * Détermine la position de l'opérateur dans une expression arithmétique uniaire.
+     * 
+     * @param exp L'expression à évaluer.
+     * @return La position de l'opérateur dans l'expression, ou -1 si aucun n'est trouvé.
+     */
     public int getOp (String exp) {
         if (exp.length()==0) {
             return -1;

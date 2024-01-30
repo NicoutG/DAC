@@ -1,15 +1,59 @@
 package src;
 
+/**
+ * La classe abstraite Valeur représente une valeur générique dans un automate cellulaire.
+ * Elle fournit les méthodes de base pour gérer différentes types de valeurs.
+ */
 public abstract class Valeur {
     
+    /**
+     * Configure la valeur en fonction de l'expression et de la position donnée.
+     *
+     * @param exp L'expression à analyser.
+     * @param position La position de l'élément dans l'expression.
+     * @param nbVoisins Le nombre de voisins dans le contexte de l'automate.
+     * @param var Un tableau de variables disponibles.
+     * @param erreur Un tableau pour stocker les messages d'erreur.
+     * @param dim La dimension de l'automate.
+     * @return Vrai si la configuration réussit, faux sinon.
+     */
     public abstract boolean set (String exp, int position, int nbVoisins, Variable [] var, String [] erreur, int dim);
     
+    /**
+     * Récupère la valeur actuelle dans le contexte de l'automate.
+     *
+     * @param tab Le tableau représentant l'état de l'automate.
+     * @param voisins Les valeurs des voisins de la cellule actuelle.
+     * @param indices Les indices de la cellule actuelle.
+     * @return La valeur calculée.
+     */
     public abstract double get (Tableau tab, double [] voisins, int [] indices);
     
+    /**
+     * Obtient la représentation sous forme de chaîne de la valeur.
+     *
+     * @return La représentation textuelle de la valeur.
+     */
     public abstract String getExp ();
 
+    /**
+     * Identifie le type d'opération basé sur l'expression donnée.
+     *
+     * @param exp L'expression à analyser.
+     * @return L'indice de l'opération dans l'expression, -1 si aucune opération n'est trouvée.
+     */
     public abstract int getOp (String exp);
     
+    /**
+     * Obtient la valeur correspondante à l'expression donnée.
+     *
+     * @param exp L'expression à analyser.
+     * @param nbVoisins Le nombre de voisins dans le contexte de l'automate.
+     * @param var Un tableau de variables disponibles.
+     * @param erreur Un tableau pour stocker les messages d'erreur.
+     * @param dim La dimension de l'automate.
+     * @return La valeur correspondante à l'expression.
+     */
     public Valeur getVal (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
         Valeur val;
         int n=(new OpAriBin ()).getOp(exp);
@@ -61,6 +105,13 @@ public abstract class Valeur {
         return null;
     }
     
+    /**
+     * Convertit une chaîne en un entier.
+     *
+     * @param exp La chaîne à convertir.
+     * @param val Un tableau pour stocker le résultat converti.
+     * @return Vrai si la conversion réussit, faux sinon.
+     */
     public boolean getInt (String exp,int val []) {
         if (val.length<1) {
             return false;
@@ -94,6 +145,13 @@ public abstract class Valeur {
         return true;
     }
 
+    /**
+     * Convertit une chaîne en un double.
+     *
+     * @param exp La chaîne à convertir.
+     * @param val Un tableau pour stocker le résultat converti.
+     * @return Vrai si la conversion réussit, faux sinon.
+     */
     public boolean getDouble (String exp, double val []) {
         if (val.length<1) {
             return false;
@@ -133,6 +191,12 @@ public abstract class Valeur {
         return true;
     }
 
+    /**
+     * Supprime les parenthèses extérieures d'une expression si nécessaire.
+     *
+     * @param exp L'expression à analyser.
+     * @return L'expression sans parenthèses extérieures.
+     */
     public String deParenthesage (String exp) {
         int par=0;
         for (int i=0;i<exp.length();i++) {
