@@ -1,9 +1,31 @@
 package src;
 
+/**
+ * La classe BlocConditionnel représente bloc de conditions et d'actions dans un automate cellulaire.
+ * Elle contient la condition à valider pour explorer les blocs ou les actions qu'elle contient.
+ */
 public class BlocConditionnel {
+
+    /**
+     * condition est la condition à valider pour explorer le bloc.
+     */
     private Condition condition;
+
+    /**
+     * condActions contient une Action ou un tableau de BlocConditionnel.
+     */
     private Object condActions;
 
+    /**
+     * Crée et configure le BlocConditionnel basé sur une expression donnée.
+     * 
+     * @param exp L'expression définissant les blocs.
+     * @param nbVoisins Le nombre de voisins de la cellule.
+     * @param var Tableau de variables utilisées dans l'expression.
+     * @param erreur Tableau pour stocker les messages d'erreur.
+     * @param dim La dimension de l'espace de l'automate.
+     * @return Vrai si le bloc est correctement configuré, faux sinon.
+     */
     public boolean set (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
         int nb=0;
         while (nb<exp.length() && exp.charAt(nb)!='{') {
@@ -38,6 +60,14 @@ public class BlocConditionnel {
         return false;
     }
 
+    /**
+     * Évalue la condition du bloc pour une cellule donnée dans un tableau d'état d'automate et retourne la valeur de l'action.
+     * 
+     * @param tab Le tableau représentant l'état de l'automate.
+     * @param voisins Les valeurs des voisins de la cellule.
+     * @param indices Les indices des voisins de la cellule.
+     * @return Un double si toutes les conditions sont validées, null sinon.
+     */
     public Object get (Tableau tab, double [] voisins, int [] indices) {
         if (condition.get(tab,voisins,indices)) {
             if (condActions instanceof Action) {
@@ -85,7 +115,7 @@ public class BlocConditionnel {
     /**
      * Crée et configure un tableau d'instances de BlocConditionnel basé sur une expression donnée.
      * 
-     * @param exp L'expression définissant la condition.
+     * @param exp L'expression définissant les blocs.
      * @param nbVoisins Le nombre de voisins de la cellule.
      * @param var Tableau de variables utilisées dans l'expression.
      * @param erreur Tableau pour stocker les messages d'erreur.
@@ -127,6 +157,12 @@ public class BlocConditionnel {
         return blocs;
     }
 
+    /**
+     * Retourne le nombre de blocs contenus dans l'expression.
+     * 
+     * @param exp L'expression définissant les blocs.
+     * @return Le nombre de blocs présent dans l'expression.
+     */
     private int getNbBlocs (String exp) {
         int par=0;
         int nb=0;
