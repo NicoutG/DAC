@@ -5,5 +5,6 @@
 1,0; /* droite 0° */
 @
 
-1==1?
+1==1 {
     1:majority;     /* Retourne la valeur majoritaire dans le voisinage */
+}

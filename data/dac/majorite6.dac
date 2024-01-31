@@ -7,5 +7,6 @@
 1,1; /* 300° */
 @
 
-1==1?
+1==1 {
     1:majority;     /* Retourne la valeur majoritaire dans le voisinage */
+}

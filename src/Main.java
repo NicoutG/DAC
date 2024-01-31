@@ -29,7 +29,7 @@ public class Main {
         tab.setVal(5,5,-16);
 
         Regles reg=new Regles(); // Initialisation d'une règle
-        reg.set("1,0; 1,-1; 0,-1; -1,-1; -1,0; -1,1; 0,1; 1,1; @ 1.0==1.0? 1.0:(maximum-minimum);"); // Définition de la règle à partir d'un code DAC
+        reg.set("1,0; 1,-1; 0,-1; -1,-1; -1,0; -1,1; 0,1; 1,1; @ 1.0==1.0 {1.0:(maximum-minimum);}"); // Définition de la règle à partir d'un code DAC
 
         for (int i=0;i<10;i++) {
             System.out.println("Etape "+i+" :");

@@ -12,10 +12,18 @@ Voici un exemple de code écrit en DAC :
 1, 0;
 @
 
-count1>0 && #0==1?
-    $var_Exe4:#2, (0.9+count3+verif(#2==2)):2;
-!(#4<=1 || #3==0) && count(#1*count(#2))==sum?   /* Ceci est un commentaire */
-    2:count1-1;
+#2==-1 {
+    $var_Exe4:3+#2; 
+    0.9:2;
+}
+sin(#4)<=0.5 && (#0>8 || #0<4) {  /* Ceci est un commentaire */
+    coord(1)==4 {
+        2:majority-1;
+    }
+    #3<=count(#0) {
+        1:4*verif(average!=1);
+    }
+}
 ```
 
 ## Documentation
@@ -66,10 +74,12 @@ La partie suivante du code DAC utilise plusieurs types de valeurs.
 Il s'agit d'un simple réel.
 
 Exemple ci-dessous :
-- 0
+- -1
 - 0.5
 - 0.9
 - 2
+- 4
+- 8
 
 ##### Le type variable
 
@@ -100,8 +110,9 @@ Voici les différentes études possibles :
 - `length` : renvoie la taille du tableau
         
 Par exemple :
-`count(#1*count(#2))==sum?`
-Dans ce code, `sum` renvoie la somme des valeurs des voisins
+- `1:verif(average!=1);` Dans ce code, `average` renvoie la moyenne des valeurs des voisins.
+- `2:majority-1;` Dans ce code, `majority` renvoie la valeur la plus présente parmi les voisins.
+
 
 ##### Les types opérateur binaire
 
@@ -114,9 +125,9 @@ Les types opérateur binaire sont les résultats d'opérations arithmetiques.
 - **Puissance** défini par `^`. Prend une valeur à sa gauche et à sa droite.
         
 Par exemple :
-- `#1*count(#2)` renvoie le produit de `#1` et `count(#2)`.
-- `0.9+count3` renvoie l'addition de `0.9` et `count3`.
-- `count1-1` renvoie la soustraction de `count1` par `1`.
+- `4*verif(average!=1)` renvoie le produit de `4` et `verif(average!=1)`.
+- `3+#2` renvoie l'addition de `3` et `#2`.
+- `majority-1` renvoie la soustraction de `majority` par `1`.
     
 ##### Les types opérateur unaire
 
@@ -126,7 +137,7 @@ Les types opérateur unaire sont des fonctions.
 - `count` : Prend une valeur à sa droite et renvoie le nombre de voisins ayant cette valeur.
 - `#` : Prend un entier à sa droite et renvoie la valeur contenue dans le i eme voisin. (0 étant la cellule actuelle).
 - `cos` : Prend une valeur à sa droite et renvoie le cosinus en degrés de cette valeur.
-- `sin` : Prend une valeur à sa droite et renvoie le inus en degrés de cette valeur.
+- `sin` : Prend une valeur à sa droite et renvoie le sinus en degrés de cette valeur.
 - `tan` : Prend une valeur à sa droite et renvoie la tangente en degrés de cette valeur.
 - `exp` : Prend une valeur à sa droite et renvoie l'exponentielle de cette valeur.
 - `ln` : Prend une valeur à sa droite et renvoie le logarithme de cette valeur.
@@ -135,26 +146,37 @@ Les types opérateur unaire sont des fonctions.
 - `int`. Prend une valeur à sa droite et renvoie la partie entière de cette valeur.
         
 Par exemple :
-- `verif(#2==2)` renvoie `1` si `#2==2`, `0` sinon
-- `count1` renvoie le nombre de voisins dont leur valeur vaut `1`
-- `count0` renvoie le nombre de voisins dont leur valeur vaut `0`
-- `count(#2)` renvoie le nombre de voisins dont leur valeur vaut celle du voisin 2
-- `count(#1*count(#2))` renvoie le nombre de voisins dont leur valeur vaut le résultat de `#1*count(#2)`
-- `#0` renvoie la valeur contenue dans la cellule sur laquelle la règle est appliquée
-- `#1` renvoie la valeur contenue dans la cellule de coordonnées 0, -1 relativement à la cellule sur laquelle la règle est appliquée
-- `#3` renvoie la valeur contenue dans la cellule de coordonnées -1, 0 relativement à la cellule sur laquelle la règle est appliquée
-- `#4` renvoie la valeur contenue dans la cellule de coordonnées 1, 0 relativement à la cellule sur laquelle la règle est appliquée
+- `#0` renvoie la valeur contenue dans la cellule sur laquelle la règle est appliquée.
+- `#2` renvoie la valeur contenue dans la cellule de coordonnées 0, 1 relativement à la cellule sur laquelle la règle est appliquée.
+- `#3` renvoie la valeur contenue dans la cellule de coordonnées -1, 0 relativement à la cellule sur laquelle la règle est appliquée.
+- `#4` renvoie la valeur contenue dans la cellule de coordonnées 1, 0 relativement à la cellule sur laquelle la règle est appliquée.
+- `verif(average!=1)` renvoie `1` si `average!=0`, `0` sinon.
+- `count(#0)` renvoie le nombre de voisins dont leur valeur est `#0`.
+- `coord(1)` renvoie la première coordonnée de la cellule sur laquelle la règle est appliquée.
+- `sin(#4)` renvoie le sinus de `#4`.
 
 
 ### Définition des règles
 
 Après avoir défini les voisins, on peut désormais définir les règles.
-Ces règles sont une succession de conditions et d'actions.
-Lorsqu'une condition est validée, les suivantes ne sont pas testées.
+Ces règles sont une succession de blocs.
+Lorsque la condition d'un bloc est validée, on parcourt les blocs ou on execute l'action qu'elle contient.
+Si aucune action n'est réalisée à la fin du code, la cellule garde la même valeur.
+
+#### Les blocs
+
+Chaque bloc est défini par une accolade ouvrante `{` et une accolade fermante `}`.
+De plus, chaque bloc est précédé d'une condition qui permet de définir quand le bloc doit être parcouru.
+
+Un bloc contient toujours soit une action, soit d'autres blocs.
+
+Par exemple :
+- `#2==-1 {}` contient l'action `$var_Exe4:3+#2; 0.9:2;` cette action est executé seulement si `#2==-1`.
+- `sin(#4)<=0.5 && (#0>8 || #0<4) {}` contient 2 blocs qui seront parcouru seulement si aucune action n'a encore été executée et que `sin(#4)<=0.5 && (#0>8 || #0<4)`.
+- `coord(1)==4 {}` contient l'action `2:majority-1;` cette action est executé seulement si aucune action n'a encore été executée, que `sin(#4)<=0.5 && (#0>8 || #0<4)` et que `coord(1)==4`.
+- `#3<=count(#0) {}` contient l'action `1:4*verif(average!=1);` cette action est executé seulement si aucune action n'a encore été executée, que `sin(#4)<=0.5 && (#0>8 || #0<4)` et que `#3<=count(#0)`.
 
 ##### Les conditions
-
-La définition d'une condition se finit toujours par le caractère `?` et est toujours suivie d'au moins une action.
 
 La condition est testée de gauche à droite et prend en compte le parenthésage.
 
@@ -171,21 +193,21 @@ Une condition peut être composée de plusieurs opérateurs conditionnels :
 - **Supérieur ou égal** défini par `>=`. Prend une valeur à sa gauche et à sa droite.
         
 Par exemple :
-- `count1>0 && #0==1` est valide si au moins un voisin vaut 1 et si la cellule sur laquelle la règle est appliquée vaut 0
-- `!(#4<=1 || #3==0) && count(#1*count(#2))==sum` est valide si `count(#1*count(#2))` vaut la somme des valeurs des voisins et que l'on n'a pas `#4` inferieur ou égal à 1 ou `#3` égal à 0.
+- `#2==-1` est valide si `#2` est égal à -1.
+- `sin(#4)<=0.5 && (#0>8 || #0<4)` est valide si `sin(#4)` est inférieur à 0.5 et que `#0` n'est pas compris entre 4 et 8.
+- `coord(1)==4` est valide si `coord(1)` vaut 4.
+- `#3<=count(#0)` est valide si `#3` est inférieur ou égal à `count(#0)`.
     
 ##### Les actions
 
-Une action est toujours précédée d'une condition.
+Une action se trouve toujours dans un bloc.
 Si la condition du dessus est valide alors on exécute l'action.
 
-Une action se finit toujours par le caractère `;`.
-
-Une action peut être composée de plusieurs instructions séparées par le caractère `,`.
+Une action peut être composée de plusieurs instructions.
 
 ##### Les instructions
 
-Une instruction commence par un coefficient qui représente le poids de l'instruction au sein de l'action.
+Une instruction se finit par le caractère `;` et commence par un coefficient qui représente le poids de l'instruction au sein de l'action.
 
 - Ce coefficient est une valeur.
 - Si la valeur est négative, la valeur 0 est appliquée.
@@ -207,20 +229,31 @@ Maintenant un exemple plus poussé, reprenons le code de l'introduction :
 1, 0;
 @
 
-count1>0 && #0==1?
-    $var_Exe4:#2, (0.9+count3+verif(#2==2)):2;
-!(#4<=1 || #3==0) && count(#1*count(#2))==sum?   /* Ceci est un commentaire */
-    2:count1-1;
+#2==-1 {
+    $var_Exe4:3+#2; 
+    0.9:2;
+}
+sin(#4)<=0.5 && (#0>8 || #0<4) {  /* Ceci est un commentaire */
+    coord(1)==4 {
+        2:majority-1;
+    }
+    #3<=count(#0) {
+        1:4*verif(average!=1);
+    }
+}
 ```
 
-- Si `count1>0 && #0==1` est valide, on execute `$var_Exe4:#2, (0.9+count3+verif(#2==2)):2`;
-- La première instruction a une probabilité de `$var_Exe4/($var_Exe4+0.9+count3+verif(#2==2))` d'être exécutée.
-On assignerait alors la valeur du deuxième voisin à la cellule sur laquelle la règle est appliquée.
-- La deuxième instruction a une probabilité de `(0.9+count3+verif(#2==2))/($var_Exe4+0.9+count3+verif(#2==2))` d'être exécutée.
+- Si `#2==-1` est valide, on execute `$var_Exe4:3+#2; 0.9:2;`;
+- La première instruction a une probabilité de `$var_Exe4/($var_Exe4+0.9)` d'être exécutée.
+On assignerait alors la valeur de `3+#2` à la cellule sur laquelle la règle est appliquée.
+- La deuxième instruction a une probabilité de `0.9/($var_Exe4+0.9)` d'être exécutée.
 On assignerait alors la valeur 2 à la cellule sur laquelle la règle est appliquée.
-- Si `!(#4<=1 || #3==0) && count(#1*count(#2))==sum` est valide, on execute `2:count1-1;`
+- Si `sin(#4)<=0.5 && (#0>8 || #0<4)` et `coord(1)==4` sont valides, on execute `2:majority-1;`
 - L'instruction a une probabilité de `2/2` = 100% de chances d'être exécutée.
-On assignerait alors (le nombre de voisins valant 1) moins 1 à la cellule sur laquelle la règle est appliquée.
+On assignerait alors la valeur de `majority-1` à la cellule sur laquelle la règle est appliquée.
+- Si `sin(#4)<=0.5 && (#0>8 || #0<4)` et `#3<=count(#0)` sont valides, on execute `1:4*verif(average!=1);`
+- L'instruction a une probabilité de `1/1` = 100% de chances d'être exécutée.
+On assignerait alors la valeur de `4*verif(average!=1)` à la cellule sur laquelle la règle est appliquée.
 
 
 Vous avez désormais toutes les clés pour définir vos propres automates cellulaires.
