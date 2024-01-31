@@ -25,14 +25,9 @@ public class Regles {
     private int [][] voisins;
 
     /**
-     * conditions est un tableau de conditions.
+     * blocs est un tableau de blocs conditionnels.
      */
-    private Condition [] conditions;
-
-    /**
-     * actions est un tableau d'actions.
-     */
-    private Action [] actions;
+    private BlocConditionnel [] blocs;
 
     /**
      * variables est un tableau de variables.
@@ -51,8 +46,7 @@ public class Regles {
         dim=0;
         valide=false;
         voisins=null;
-        conditions=null;
-        actions=null;
+        blocs=null;
         variables=null;
         erreur="";
     }
@@ -66,52 +60,10 @@ public class Regles {
         dim=0;
         valide=false;
         voisins=null;
-        conditions=null;
-        actions=null;
+        blocs=null;
         variables=null;
         erreur="";
         charger(fichier);
-    }
-    
-    /**
-     * Définit une condition pour l'automate à une position donnée.
-     * 
-     * @param exp L'expression de la condition.
-     * @param num La position dans le tableau de conditions.
-     * @return Vrai si la condition est définie avec succès, faux sinon.
-     */
-    private boolean setCondition (String exp, int num) {
-        if (num<0 || conditions.length-1<num) {
-            return false;
-        }
-        exp=(new Immediat ()).deParenthesage(exp);
-        String [] er=new String [1];
-        er[0]=erreur;
-        conditions[num]=(new OpLogBin ()).getCond(exp,voisins.length,variables,er,dim);
-        erreur=er[0];
-        if (conditions[num]==null) {
-            return false;
-        }
-        return true;
-    }
-    
-    /**
-     * Définit une action pour l'automate à une position donnée.
-     * 
-     * @param exp L'expression de l'action.
-     * @param num La position dans le tableau d'actions.
-     * @return Vrai si l'action est définie avec succès, faux sinon.
-     */
-    private boolean setAction (String exp, int num) {
-        if (num<0 || conditions.length-1<num) {
-            return false;
-        }
-        actions[num]=new Action ();
-        String [] er=new String [1];
-        er[0]=erreur;
-        boolean ret=actions[num].set(exp,voisins.length,variables,er,dim);
-        erreur=er[0];
-        return ret;
     }
     
     /**
@@ -120,33 +72,13 @@ public class Regles {
      * @param exp L'expression représentant les règles de l'automate.
      * @return Vrai si les règles sont définies avec succès, faux sinon.
      */
-    private boolean setCondActions (String exp) {
+    private boolean setBlocs (String exp) {
         setVariables(exp);
-        String [] exps=exp.split(";");
-        if (exps.length==0) {
-            erreur="Aucune action trouvée";
+        String [] er=new String [1]; 
+        blocs=(new BlocConditionnel ()).getBlocs(exp,voisins.length,variables, er,dim);
+        if (blocs==null) {
+            erreur=er[0];
             return false;
-        }
-        conditions=new Condition [exps.length];
-        actions=new Action [exps.length];
-        String [] acts=null;
-        for (int i=0;i<exps.length;i++) {
-            acts=exps[i].split("\\?");
-            if (acts==null || acts.length!=2) {
-                if (acts.length>2) {
-                    erreur="Action manquante";
-                }
-                else {
-                    erreur="Condition attendue à gauche et action attendue à droite de ?";
-                }
-                return false;
-            }
-            if (!setCondition(acts[0],i)) {
-                return false;
-            }
-            if (!setAction(acts[1],i)) {
-                return false;
-            }
         }
         return true;
     }
@@ -252,7 +184,7 @@ public class Regles {
         }
         String res="";
         boolean com=false;
-        for (int i=0;i<exp.length()-1;i++) {
+        for (int i=0;i<exp.length();i++) {
             if (exp.charAt(i)=='/' && exp.charAt(i+1)=='*') {
                 i+=2;
                 com=true;
@@ -292,9 +224,11 @@ public class Regles {
             }
             valVois[j]=tab.getVal(vois);
         }
-        for (int i=0;i<conditions.length;i++) {
-            if (conditions[i].get(tab, valVois, indices)) {
-                return actions[i].get(tab,valVois,indices);
+        Object res;
+        for (int i=0;i<blocs.length;i++) {
+            res=blocs[i].get(tab, valVois, indices);
+            if (res!=null) {
+                return (double)res;
             }
         }
         return tab.getVal(indices);
@@ -325,7 +259,7 @@ public class Regles {
         if (!valide) {
             return false;
         }
-        valide=setCondActions(exps[1]);
+        valide=setBlocs(exps[1]);
         return valide;
     }
     
@@ -374,9 +308,9 @@ public class Regles {
                 }
                 exp+=";\r\n";
             }
-            exp+="@\r\n\r";
-            for (int i=0;i<conditions.length;i++) {
-                exp+=conditions[i].getExp()+"?\r\n    "+actions[i].getExp()+"\r\n";
+            exp+="@\r\n\r\n";
+            for (int i=0;i<blocs.length;i++) {
+                exp+=blocs[i].getExp(0);
             }
             return exp;
         }

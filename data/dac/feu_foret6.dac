@@ -12,8 +12,10 @@
 /* 2 forêt en feu */
 /* 3 forêt brulée */
 
-#(0)==2.0?     /* La forêt en feu devient brulée */
-    1.0:3.0; 
-#(0)==1.0?     /* La forêt prend feu ou pas en fonction du nombre de forêts voisines en feu */
-    ($q+(verif(#(1)==2.0)*($p+$fd))+(verif(#(2)==2.0)*($p+cos(60)*$fd+sin(60.0)*$fh))+(verif(#(3)==2.0)*($p+cos(120)*$fd+sin(120)*$fh))+(verif(#(4)==2.0)*($p-$fd))+(verif(#(5)==2.0)*($p+cos(240)*$fd+sin(240)*$fh))+(verif(#(6)==2.0)*($p+cos(300)*$fd+sin(300)*$fh))):2.0,
+#(0)==2.0 {     /* La forêt en feu devient brulée */
+    1.0:3.0;
+} 
+#(0)==1.0 {  /* La forêt prend feu ou pas en fonction du nombre de forêts voisines en feu */
+    ($q+(verif(#(1)==2.0)*($p+$fd))+(verif(#(2)==2.0)*($p+cos(60)*$fd+sin(60.0)*$fh))+(verif(#(3)==2.0)*($p+cos(120)*$fd+sin(120)*$fh))+(verif(#(4)==2.0)*($p-$fd))+(verif(#(5)==2.0)*($p+cos(240)*$fd+sin(240)*$fh))+(verif(#(6)==2.0)*($p+cos(300)*$fd+sin(300)*$fh))):2.0;
     1.0-($q+(verif(#(1)==2.0)*($p+$fd))+(verif(#(2)==2.0)*($p+cos(60)*$fd+sin(60.0)*$fh))+(verif(#(3)==2.0)*($p+cos(120)*$fd+sin(120)*$fh))+(verif(#(4)==2.0)*($p-$fd))+(verif(#(5)==2.0)*($p+cos(240)*$fd+sin(240)*$fh))+(verif(#(6)==2.0)*($p+cos(300)*$fd+sin(300)*$fh))):1.0; 
+}

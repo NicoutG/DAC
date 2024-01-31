@@ -28,7 +28,7 @@ public class Action {
      * @return Vrai si l'action est correctement configurée, faux sinon.
      */
     public boolean set (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
-        String [] exps=exp.split(",");
+        String [] exps=exp.split(";");
         if (exps==null || exps.length==0) {
             erreur[0]="Instruction manquante";
             return false;
@@ -91,14 +91,20 @@ public class Action {
     /**
      * Retourne l'expression représentant les probabilités et les valeurs de l'action.
      * 
+     * @param indent L'indice qui définit le nombre d'espaces à mettre avant.
      * @return Une chaîne de caractères représentant l'expression de l'action.
      */
-    public String getExp () {
-        String exp=proba[0].getExp()+":"+valeurs[0].getExp();
-        for (int i=1;i<proba.length;i++) {
-            exp+=", \r\n    "+proba[i].getExp()+":"+valeurs[i].getExp();
+    public String getExp (int indent) {
+        String exp="";
+        for (int i=0;i<proba.length;i++) {
+            for (int j=0;j<indent;j++) {
+                exp+="    ";
+            }
+            exp+=proba[i].getExp()+":"+valeurs[i].getExp()+";";
+            if (i<proba.length-1) {
+                exp+="\r\n";
+            }
         }
-        exp+="; ";
         return exp;
     }
 }

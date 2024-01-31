@@ -12,7 +12,9 @@
 /* 0 mort */
 /* 1 vivant */
 
-count(1.0)==3.0?     /* naissance car 3 voisins en vie */
+count(1.0)==3.0 {     /* naissance car 3 voisins en vie */
     1.0:1.0; 
-(count(1.0)<2.0)||(count(1.0)>3.0)?      /* mort car moins de 2 ou plus de 3 voisins en vie */
+}
+(count(1.0)<2.0)||(count(1.0)>3.0) {      /* mort car moins de 2 ou plus de 3 voisins en vie */
     1.0:0.0; 
+}
