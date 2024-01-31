@@ -55,6 +55,7 @@ public abstract class Valeur {
      * @return La valeur correspondante à l'expression.
      */
     public Valeur getVal (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
+        exp=exp.trim();
         Valeur val;
         int n=(new OpAriBin ()).getOp(exp);
         if (n!=-1) {
@@ -116,9 +117,7 @@ public abstract class Valeur {
         if (val.length<1) {
             return false;
         }
-        while (exp.length()>0 && exp.charAt(0)==' ') {
-            exp=exp.substring(1,exp.length());
-        }
+        exp=exp.trim();
         if (!(exp.length()>0)) {
             return false;
         }
@@ -156,9 +155,7 @@ public abstract class Valeur {
         if (val.length<1) {
             return false;
         }
-        while (exp.length()>0 && exp.charAt(0)==' ') {
-            exp=exp.substring(1,exp.length());
-        }
+        exp=exp.trim();
         val[0]=0.0;
         int i=0;
         boolean neg=false;

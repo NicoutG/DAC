@@ -59,6 +59,7 @@ public abstract class Condition {
      * @return Une instance de Condition configurée ou null en cas d'échec.
      */
     public Condition getCond (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
+        exp=exp.trim();
         Condition cond;
         int n=(new OpLogBin ()).getOp(exp);
         if (n!=-1) {

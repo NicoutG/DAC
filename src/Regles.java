@@ -73,6 +73,7 @@ public class Regles {
      * @return Vrai si les règles sont définies avec succès, faux sinon.
      */
     private boolean setBlocs (String exp) {
+        exp=exp.trim();
         setVariables(exp);
         String [] er=new String [1]; 
         blocs=(new BlocConditionnel ()).getBlocs(exp,voisins.length,variables, er,dim);
@@ -90,6 +91,7 @@ public class Regles {
      * @return Vrai si les voisins sont définis avec succès, faux sinon.
      */
     private boolean setVoisins (String exp) {
+        exp=exp.trim();
         String [] vois=exp.split(";");
         if (vois==null || vois.length<1) {
             erreur="Aucun voisin defini";
@@ -104,6 +106,10 @@ public class Regles {
         voisins=new int [vois.length][dim];
         for (int j=0;j<vois.length;j++) {
             indices=vois[j].split(",");
+            if (indices[0].equals("")) {
+                erreur="; en trop après un voisin";
+                return false;
+            }
             if (indices==null || indices.length!=dim) {
                 erreur="Les coordonnées du voisin "+(j+1)+" ne sont pas de la meme dimension";
                 return false;
