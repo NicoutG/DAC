@@ -64,14 +64,6 @@ public abstract class Valeur {
             }
             return null;
         }
-        n=(new OpAriUni ()).getOp(exp);
-        if (n!=-1) {
-            val=new OpAriUni ();
-            if (val.set(exp,n,nbVoisins,var,erreur,dim)) {
-                return val;
-            }
-            return null;
-        }
         n=(new Variable ()).getOp(exp);
         if (n!=-1) {
             if (var!=null) {
@@ -85,17 +77,17 @@ public abstract class Valeur {
             erreur[0]="Variable "+exp+" introuvable";
             return null;
         }
-        n=(new Immediat ()).getOp(exp);
+        n=(new Fonction ()).getOp(exp);
         if (n!=-1) {
-            val=new Immediat ();
+            val=new Fonction ();
             if (val.set(exp,n,nbVoisins,var,erreur,dim)) {
                 return val;
             }
             return null;
         }
-        n=(new Etude ()).getOp(exp);
+        n=(new Immediat ()).getOp(exp);
         if (n!=-1) {
-            val=new Etude ();
+            val=new Immediat ();
             if (val.set(exp,n,nbVoisins,var,erreur,dim)) {
                 return val;
             }
