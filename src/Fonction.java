@@ -183,7 +183,7 @@ public class Fonction extends Valeur{
                 return res;
             }
             case "#": {
-                int entier=((int [])parametres)[0]%(voisins.length+1);
+                int entier=modulo(((int [])parametres)[0],(voisins.length+1));
                 if (entier==0) {
                     return tab.getVal(indices);
                 }
@@ -206,7 +206,7 @@ public class Fonction extends Valeur{
                         return 0;
             }
             case "coord": {
-                int entier=(((int [])parametres)[0]-1)%tab.getDim()+1;
+                int entier=modulo((((int [])parametres)[0]-1),tab.getDim()+1);
                 return indices[entier-1];
             }
             case "int": return (int)((Valeur [])parametres)[0].get(tab, voisins, indices);
@@ -278,6 +278,20 @@ public class Fonction extends Valeur{
             }
         }
         return -1;
+    }
+
+    /**
+     * Calcule le modulo de deux entiers.
+     * 
+     * @param val1 Le premier entier.
+     * @param val2 Le second entier.
+     * @return Le modulo de val1 par val2.
+     */
+    public int modulo (int val1, int val2) {
+        if (val1>=0) {
+            return val1%val2;
+        }
+        return (val2-(-val1-1)%val2-1);
     }
 
     /**
