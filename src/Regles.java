@@ -73,7 +73,6 @@ public class Regles {
      * @return Vrai si les règles sont définies avec succès, faux sinon.
      */
     private boolean setBlocs (String exp) {
-        exp=exp.trim();
         setVariables(exp);
         String [] er=new String [1]; 
         blocs=(new BlocConditionnel ()).getBlocs(exp,voisins.length,variables, er,dim);
@@ -91,11 +90,16 @@ public class Regles {
      * @return Vrai si les voisins sont définis avec succès, faux sinon.
      */
     private boolean setVoisins (String exp) {
-        exp=exp.trim();
         String [] vois=exp.split(";");
         if (vois==null || vois.length<1) {
             erreur="Aucun voisin defini";
             return false;
+        }
+        for (int i=0;i<vois.length;i++) {
+            if (vois[i].equals("")) {
+                erreur="; en trop après un voisin";
+                return false;
+            }
         }
         String [] indices=vois[0].split(",");
         if (indices==null || indices.length<1) {
@@ -106,10 +110,6 @@ public class Regles {
         voisins=new int [vois.length][dim];
         for (int j=0;j<vois.length;j++) {
             indices=vois[j].split(",");
-            if (indices[0].equals("")) {
-                erreur="; en trop après un voisin";
-                return false;
-            }
             if (indices==null || indices.length!=dim) {
                 erreur="Les coordonnées du voisin "+(j+1)+" ne sont pas de la meme dimension";
                 return false;
@@ -448,17 +448,11 @@ public class Regles {
      * @return L'expression simplifiée.
      */
     private String simplification (String exp) {
-        String [] exps=exp.split("\r?\n|\r");
-        String res="";
-        for (int i=0;i<exps.length;i++) {
-            res+=exps[i];
-        }
-        exps=res.split(" ");
-        res="";
-        for (int i=0;i<exps.length;i++) {
-            res+=exps[i];
-        }
-        return res;
+        exp=exp.replace(" ", "");
+        exp=exp.replace("\n", "");
+        exp=exp.replace("\r", "");
+        exp=exp.replace("\t", "");
+        return exp;
     }
 
     /**
