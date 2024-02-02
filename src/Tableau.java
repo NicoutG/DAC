@@ -377,4 +377,115 @@ public class Tableau {
         System.out.println();
     }
 
+    /**
+     * Renvoie la valeur maximale présente dans le tableau.
+     * 
+     * @return La valeur du maximum.
+     */
+    public double maximum () {
+        int [] indices= new int [dim];
+        double maximum=getVal(indices);
+        double val;
+        while (indices[dim-1]<taille) {
+            for (int i=dim-1;i>=0;i--) {
+                if (indices[i]>=taille) {
+                    indices[i]=0;
+                }
+            }
+            val=getVal(indices);
+            if (val>maximum) {
+                maximum=val;
+            }
+            indices[0]++;
+            for (int i=0;i<dim-1;i++) {
+                if (indices[i]>=taille) {
+                    indices[i+1]++;
+                }
+            }
+        }
+        return maximum;
+    }
+
+    /**
+     * Renvoie la valeur minimale présente dans le tableau.
+     * 
+     * @return La valeur du minimum.
+     */
+    public double minimum () {
+        int [] indices= new int [dim];
+        double minimum=getVal(indices);
+        double val;
+        while (indices[dim-1]<taille) {
+            for (int i=dim-1;i>=0;i--) {
+                if (indices[i]>=taille) {
+                    indices[i]=0;
+                }
+            }
+            val=getVal(indices);
+            if (val<minimum) {
+                minimum=val;
+            }
+            indices[0]++;
+            for (int i=0;i<dim-1;i++) {
+                if (indices[i]>=taille) {
+                    indices[i+1]++;
+                }
+            }
+        }
+        return minimum;
+    }
+
+    /**
+     * Renvoie la moyenne des valeurs du tableau.
+     * 
+     * @return La moyenne des valeurs du tableau.
+     */
+    public double moyenne () {
+        int [] indices= new int [dim];
+        double somme=0;
+        while (indices[dim-1]<taille) {
+            for (int i=dim-1;i>=0;i--) {
+                if (indices[i]>=taille) {
+                    indices[i]=0;
+                }
+            }
+            somme+=getVal(indices);
+            indices[0]++;
+            for (int i=0;i<dim-1;i++) {
+                if (indices[i]>=taille) {
+                    indices[i+1]++;
+                }
+            }
+        }
+        return somme/Math.pow(taille,dim);
+    }
+
+    /**
+     * Renvoie le nombre d'occurences d'une valeur dans le tableau.
+     * 
+     * @param val La valeur dont on retourne le nombre d'occurences.
+     * @return Le nombre d'occurence de la valeur dans le tableau.
+     */
+    public int count (double val) {
+        int [] indices= new int [dim];
+        int oc=0;
+        while (indices[dim-1]<taille) {
+            for (int i=dim-1;i>=0;i--) {
+                if (indices[i]>=taille) {
+                    indices[i]=0;
+                }
+            }
+            if (val==getVal(indices)) {
+                oc++;
+            }
+            indices[0]++;
+            for (int i=0;i<dim-1;i++) {
+                if (indices[i]>=taille) {
+                    indices[i+1]++;
+                }
+            }
+        }
+        return oc;
+    }
+
 }
