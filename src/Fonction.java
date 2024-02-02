@@ -19,11 +19,21 @@ public class Fonction extends Valeur{
     private int fonction;
 
     /**
-     * opList est la liste des opérations unaires possibles.
+     * fonctionList est la liste des fonctions possibles.
      */
-    private String [] fonctionsList=  {"maximum","minimum","majority","minority","average","median","sum", "length","verif","count","#","cos","sin","tan","exp","ln","rand","coord","int","abs"};
-    private int [] nbParams=          {    0    ,    0    ,     0    ,     0    ,    0    ,    0   ,  0  ,     0   ,   1   ,   1   , 1 ,  1  ,  1  ,  1  ,  1  ,  1 ,   1  ,   1   ,  1  ,  1  };
-    private char [] paramType=        {   'n'   ,   'n'   ,    'n'   ,    'n'   ,   'n'   ,   'n'  , 'n' ,    'n'  ,  'c'  ,  'v'  ,'i', 'v' , 'v' , 'v' , 'v' , 'v',  'i' ,  'i'  , 'v' , 'v' };
+    private String [] fonctionsList=  {"maximum","minimum","majority","minority","average","median","sum", "length","verif","count","#","cos","sin","tan","exp","ln","rand","coord","int","abs","max","min","val"};
+    
+    /**
+     * nbParams est le nombre de paramètres que prend chaque fonction.
+     * -1 si le nombre de paramètres dépend de la dimension de la règle.
+     */
+    private int [] nbParams=          {    0    ,    0    ,     0    ,     0    ,    0    ,    0   ,  0  ,     0   ,   1   ,   1   , 1 ,  1  ,  1  ,  1  ,  1  ,  1 ,   1  ,   1   ,  1  ,  1  ,  2  ,  2  ,  -1 };
+    
+    /**
+     * paramType définit le type des paramètres de la fonction.
+     * 'n' si aucun paramètres, 'v' pour des valeurs, 'c' pour des conditions et 'i' pour des entiers
+     */
+    private char [] paramType=        {   'n'   ,   'n'   ,    'n'   ,    'n'   ,   'n'   ,   'n'  , 'n' ,    'n'  ,  'c'  ,  'v'  ,'i', 'v' , 'v' , 'v' , 'v' , 'v',  'i' ,  'i'  , 'v' , 'v' , 'v' , 'v' , 'v' };
 
     /**
      * Configure la fonction à partir d'une expression, position, nombre de voisins,
@@ -131,8 +141,8 @@ public class Fonction extends Valeur{
                 erreur[0]="Parenthèses manquante après : "+fonctionsList[fonction];
                 return false;
             }
-            if (num!=nbParams[fonction]) {
-                erreur[0]="La fonction "+fonctionsList[fonction]+" attend "+nbParams[fonction]+" paramètres contre "+num+" donnés";
+            if (num!=longueur) {
+                erreur[0]="La fonction "+fonctionsList[fonction]+" attend "+longueur+" paramètres contre "+num+" donnés";
                 return false;
             }
         }
@@ -206,11 +216,19 @@ public class Fonction extends Valeur{
                         return 0;
             }
             case "coord": {
-                int entier=modulo((((int [])parametres)[0]-1),tab.getDim()+1);
+                int entier=modulo((((int [])parametres)[0]-1),tab.getDim())+1;
                 return indices[entier-1];
             }
             case "int": return (int)((Valeur [])parametres)[0].get(tab, voisins, indices);
             case "abs": return Math.abs(((Valeur [])parametres)[0].get(tab, voisins, indices));
+            case "max": return Math.max(((Valeur [])parametres)[0].get(tab, voisins, indices),((Valeur [])parametres)[1].get(tab, voisins, indices));
+            case "min": return Math.min(((Valeur [])parametres)[0].get(tab, voisins, indices),((Valeur [])parametres)[1].get(tab, voisins, indices));
+            case "val": {
+                int [] vals=new int [((Valeur [])parametres).length];
+                for (int i=0;i<vals.length;i++)
+                    vals[i]=(int)((Valeur [])parametres)[i].get(tab, voisins, indices);
+                return tab.getVal(vals);
+            }
         }
         return 0;
     }
@@ -287,7 +305,7 @@ public class Fonction extends Valeur{
      * @param val2 Le second entier.
      * @return Le modulo de val1 par val2.
      */
-    public int modulo (int val1, int val2) {
+    private int modulo (int val1, int val2) {
         if (val1>=0) {
             return val1%val2;
         }
