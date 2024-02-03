@@ -32,7 +32,7 @@ public class BlocConditionnel {
             nb++;
         }
         if (nb<exp.length() && exp.charAt(nb)=='{') {
-            condition=(new OpLogBin ()).getCond(exp.substring(0, nb),nbVoisins,var,erreur,dim);
+            condition=(new OpLogBin ()).getCond((new Immediat ()).deParenthesage(exp.substring(0, nb)),nbVoisins,var,erreur,dim);
             if (condition==null) {
                 return false;
             }
