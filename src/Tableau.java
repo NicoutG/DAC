@@ -488,4 +488,64 @@ public class Tableau {
         return oc;
     }
 
+    /**
+     * Renvoie l'ensemble des valeurs du tableau triées dans l'ordre décroissant d'occurences.
+     * 
+     * @param occurences Renvoie les occurences des valeurs les plus présentes.
+     * @return L'ensemble des valeurs du tableau triées dans l'ordre décroissant d'occurences.
+     */
+    public double [] countAll (int [] occurences) {
+        int [] indices= new int [dim];
+        ArrayList <Double> vals=new ArrayList<Double>();
+        ArrayList <Integer> oc=new ArrayList<Integer>();
+        double val;
+        while (indices[dim-1]<taille) {
+            for (int i=dim-1;i>=0;i--) {
+                if (indices[i]>=taille) {
+                    indices[i]=0;
+                }
+            }
+            val=getVal(indices);
+            if (!vals.contains(val)) {
+                vals.add(val);
+                oc.add(1);
+            }
+            else {
+                int index=vals.indexOf(val);
+                oc.set(index, oc.get(index)+1);
+            }
+            indices[0]++;
+            for (int i=0;i<dim-1;i++) {
+                if (indices[i]>=taille) {
+                    indices[i+1]++;
+                }
+            }
+        }
+        double [] res=new double [vals.size()];
+        int max;
+        int indice;
+        int oc2;
+        for (int i=0;i<res.length;i++) {
+            max=oc.get(i);
+            indice=i;
+            for (int j=i+1;j<res.length;j++) {
+                oc2=oc.get(j);
+                if (oc2>max) {
+                    indice=j;
+                    max=oc2;
+                }
+            }
+            res[i]=vals.get(indice);
+            if (occurences!=null && i<occurences.length) {
+                occurences[i]=max;
+            }
+            val=vals.get(i);
+            vals.set(i,vals.get(indice));
+            vals.set(indice,val);
+            oc.set(indice,oc.get(i));
+            oc.set(i,max);
+        }
+        return res;
+    }
+
 }
