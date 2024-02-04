@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Le **DAC** (Définition d'Automates Cellulaires) est un language qui permet comme son nom l'indique de définir des automates cellulaires. Il permet notamment de définir les voisins et les règles appliquées sur chaque cellules de l'automate (un tableau de dimension n).
+Le **DAC** (Définition d'Automates Cellulaires) est un language qui permet comme son nom l'indique de définir des automates cellulaires. Il permet notamment de définir les voisins et les règles appliquées sur chaque cellules d'un tableau (un tableau de dimension n).
 Ce projet permet d'interpréter ce langage.
 
 ## Contributeurs 
