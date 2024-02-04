@@ -124,7 +124,7 @@ public class BlocConditionnel {
      */
     public BlocConditionnel [] getBlocs (String exp, int nbVoisins, Variable [] var, String [] erreur, int dim) {
         int nb=getNbBlocs(exp);
-        if (nb<-1) {
+        if (nb==-1) {
             erreur[0]="Erreur d'accolades";
             return null;
         }
