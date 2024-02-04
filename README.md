@@ -9,7 +9,7 @@ Ce projet permet d'interpréter ce langage.
 
 - ANTOINE Maxime : Site web du DAC
 - GALLET Nicolas : Langage DAC et interpréteur
-- GINHAC Jules : Documentation du code
+- GINHAC Jules : Documentation du code et tests de regressions
 
 ## Mentions
 
@@ -20,6 +20,12 @@ Site web du DAC : http://dac.poly-api.fr
 ### src
     - L'ensemble du code java necessaire à l'interprétation du DAC.
     - Main.java : Divers exemples d'utilisations du DAC.
+
+#### test
+    - Des fichiers de test des divers classes.
+
+### lib
+    - L'extension nécessaire pour les tests.
 
 ### doc
     - Tuto_DAC.md : Le tuto pour écrire en DAC.
