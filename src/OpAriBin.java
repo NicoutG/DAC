@@ -87,7 +87,7 @@ public class OpAriBin extends Valeur {
         switch (op) {
             case "+": return val1.get(tab,voisins,indices)+val2.get(tab,voisins,indices);
             case "-": return val1.get(tab,voisins,indices)-val2.get(tab,voisins,indices);
-            case "%": return val1.get(tab,voisins,indices)%val2.get(tab,voisins,indices);
+            case "%": return modulo(val1.get(tab,voisins,indices),val2.get(tab,voisins,indices));
             case "*": return val1.get(tab,voisins,indices)*val2.get(tab,voisins,indices);
             case "/": return val1.get(tab,voisins,indices)/val2.get(tab,voisins,indices);
             case "^": return Math.pow(val1.get(tab,voisins,indices),val2.get(tab,voisins,indices));
@@ -144,5 +144,13 @@ public class OpAriBin extends Valeur {
             }
         }
         return -1;
+    }
+
+    public double modulo (double nb1, double nb2) {
+        double result = nb1 % nb2;
+        if (result<0) {
+            result+=nb2;
+        }
+        return result;
     }
 }

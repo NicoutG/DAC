@@ -274,7 +274,7 @@ public class Fonction extends Valeur{
         }
         int par=0;
         int debut;
-        for (int i=0;i<exp.length();i++) {
+        for (int i=exp.length()-1;i>=0;i--) {
             if (exp.charAt(i)=='(') {
                 par--;
             }
@@ -283,10 +283,12 @@ public class Fonction extends Valeur{
                     par++;
                 }
                 else {
-                    for (int k=0;k<fonctionsList.length;k++) {
-                        debut=i-fonctionsList[k].length()+1;
-                        if (0<=debut && exp.substring(debut,i+1).equals(fonctionsList[k])) {
-                            return i;
+                    if (par==0) {
+                        for (int k=0;k<fonctionsList.length;k++) {
+                            debut=i-fonctionsList[k].length()+1;
+                            if (0<=debut && exp.substring(debut,i+1).equals(fonctionsList[k])) {
+                                return i;
+                            }
                         }
                     }
                 }
